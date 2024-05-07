@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, Animated } from "react-native";
 import ImageButton from "./ImageButton"; // Assuming ImageButton component exists
 import SwipeGesture from "react-native-swipe-gestures";
 import { useState, useRef } from "react";
+import { likeReact } from "./AnimateIcon";
 
 const setOfImages = [
   // Replace these with the EXACT paths to your images (relative to this component file)
@@ -18,14 +19,41 @@ export default function App() {
   const animatedValue = useRef(new Animated.Value(1)).current; // Create an Animated value
   const [valueLike, setValueLike] = useState(0)
   const [valueDislike, setValueDislike] = useState(0)
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const fadeAnim2 = useRef(new Animated.Value(0)).current;
 
-  const handleLike = (e) => {
-    // Handle button press here
+  const [isVisible, setIsVisible] = useState(false);
 
+  const pressLike = () => {
+    // Will change fadeAnim value to 1 in 5 seconds
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+    setTimeout(() => {
+      Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: 1100,
+      useNativeDriver: true,
+    }).start();
+  }, 1000); // Delay for 1000 milliseconds (1 second)
   };
 
-  const handleDislike = (e) => {
-    // Handle button press here
+  const pressDislike = () => {
+    // Will change fadeAnim value to 1 in 5 seconds
+    Animated.timing(fadeAnim2, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+    setTimeout(() => {
+      Animated.timing(fadeAnim2, {
+      toValue: 0,
+      duration: 1100,
+      useNativeDriver: true,
+    }).start();
+  }, 1000); // Delay for 1000 milliseconds (1 second)
   };
 
   const onSwipeLeft = () => {
@@ -79,13 +107,33 @@ export default function App() {
           />
         </SwipeGesture>
       </Animated.View>
+      <Animated.View
+        style={[
+          styles.fadingContainer,
+          {
+            opacity: fadeAnim,
+          },
+        ]}>
+        <Image source={require("./assets/icon_love.jpg")} style={{width: 200, height: 200, position: 'absolute', top: -300 }}/>
+      </Animated.View>
+      <Animated.View
+        style={[
+          styles.fadingContainer,
+          {
+            opacity: fadeAnim2,
+          },
+        ]}>
+          <Image source={require("./assets/icon_hate.png")} style={{width: 275, height: 200, position: 'absolute', top: -300, left: -100 }}/>
+
+      </Animated.View>
+      <Image source={require("./assets/icon_hate.png")} style={{width: 200, height: 200, position: 'absolute', top: -300 }}/>
       <View style={styles.row}>
         <View style={{ alignItems: "center" }}>
-          <ImageButton onPress={handleDislike} key={"dislike"} source={require("./assets/icon_dislike.png")} title="DISLIKE" />
+          <ImageButton onPress={pressDislike} key={"dislike"} source={require("./assets/icon_dislike.png")} title="DISLIKE" />
         </View>
         <View style={styles.buttonSeparator} />
         <View>
-          <ImageButton onPress={handleLike} key={"like"} source={require("./assets/icon_like.png")} title="LIKE" />
+          <ImageButton onPress={pressLike} key={"like"} source={require("./assets/icon_like.png")} title="LIKE" />
         </View>
       </View>
 
@@ -123,6 +171,12 @@ const styles = StyleSheet.create({
     height: "100%",
     resizeMode: "cover",
   },
+  imageReact: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+  }
+  ,
   row: {
     width: "50%",
     top: 50,
