@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
 import ImageButton from "./ImageButton";
-import SwipeGesture from 'react-native-swipe-gestures';
+import SwipeGesture from "react-native-swipe-gestures";
 import { useState } from "react";
 
 const setOfImages = [
@@ -12,35 +12,40 @@ const setOfImages = [
 ];
 
 export default function App() {
-  var [currentIndex, setCurrentIndex] = useState(0)
-    
+  var [currentIndex, setCurrentIndex] = useState(0);
+
   const handlePress = (e) => {
     // Handle button press here
-    console.log(e)
+    console.log(e);
   };
 
   const onSwipeLeft = () => {
-    console.log('Swiped left!');
-    setCurrentIndex(currentIndex + 1);
-    // Handle swipe left event
+    if (currentIndex >= setOfImages.length - 1) {
+      setCurrentIndex(setOfImages.length - 1);
+    } else {
+      setCurrentIndex(currentIndex + 1);
+    }
   };
 
   const onSwipeRight = () => {
-    console.log('Swiped right!');
-    setCurrentIndex(currentIndex - 1);
-    // Handle swipe right event
+    if (currentIndex <= 0) {
+      setCurrentIndex(0);
+    } else {
+      setCurrentIndex(currentIndex - 1);
+    }
   };
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Trinder App</Text>
-      <SwipeGesture 
+      <SwipeGesture
         style={styles.images}
         onSwipeLeft={onSwipeLeft}
         onSwipeRight={onSwipeRight}
         config={{
           velocityThreshold: 0.3,
           directionalOffsetThreshold: 80,
-        }}>
+        }}
+      >
         <Image source={setOfImages[currentIndex]} style={styles.image} />
       </SwipeGesture>
       <View style={styles.row}>
@@ -51,7 +56,7 @@ export default function App() {
             title="DISLIKE"
           />
         </View>
-        <View style={styles.buttonSeparator}/>
+        <View style={styles.buttonSeparator} />
         <View>
           <ImageButton
             onPress={handlePress}
@@ -87,14 +92,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: "#75A47F",
     borderWidth: 8,
-    overflow: 'hidden'
+    overflow: "hidden",
   },
   image: {
     flex: 1,
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover'
-  },  
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
   row: {
     width: "50%",
     top: 50,
