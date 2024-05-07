@@ -2,19 +2,32 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, Image } from "react-native";
 import ImageButton from "./ImageButton";
 import SwipeGesture from 'react-native-swipe-gestures';
+import { useState } from "react";
+
+const setOfImages = [
+  require("./assets/jake1.jpg"),
+  require("./assets/jake2.jpg"),
+  require("./assets/jake3.jpg"),
+  require("./assets/jake4.jpg"),
+];
 
 export default function App() {
+  var [currentIndex, setCurrentIndex] = useState(0)
+    
   const handlePress = (e) => {
     // Handle button press here
+    console.log(e)
   };
 
   const onSwipeLeft = () => {
     console.log('Swiped left!');
+    setCurrentIndex(currentIndex + 1);
     // Handle swipe left event
   };
 
   const onSwipeRight = () => {
     console.log('Swiped right!');
+    setCurrentIndex(currentIndex - 1);
     // Handle swipe right event
   };
   return (
@@ -28,7 +41,7 @@ export default function App() {
           velocityThreshold: 0.3,
           directionalOffsetThreshold: 80,
         }}>
-        <Image source={require("./assets/jake1.jpg")} style={styles.image} />
+        <Image source={setOfImages[currentIndex]} style={styles.image} />
       </SwipeGesture>
       <View style={styles.row}>
         <View style={{ alignItems: "center" }}>
@@ -37,7 +50,6 @@ export default function App() {
             source={require("./assets/icon_dislike.png")}
             title="DISLIKE"
           />
-          <Text style={styles.contentText}>← Swipe Left</Text>
         </View>
         <View style={styles.buttonSeparator}/>
         <View>
@@ -46,7 +58,6 @@ export default function App() {
             source={require("./assets/icon_like.png")}
             title="LIKE"
           />
-          <Text style={styles.contentText}>Swipe Right →</Text>
         </View>
       </View>
 
